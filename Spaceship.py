@@ -2,7 +2,7 @@
 # spaceship.py
 # Imports des classes (assure-toi que les noms de fichiers sont en minuscules : member.py, operator.py, mentalist.py)
 from Member import Member
-from Operateur import Operateur
+from Operator import Operateur
 from Mentalist import Mentalist
 
 

@@ -1,14 +1,13 @@
-
 # Import de la classe Member depuis son module
 
 from Member import Member
 
+
 class Operator(Member):
-    def __init__(self, first_name: str, last_name: str, gender: str, age: int,
-                 role: str, experience: int = 0):
+    def __init__(self, first_name, last_name, gender, age, role, experience=0):
         super().__init__(first_name, last_name, gender, age)
         self.__role = role
-        self.__experience = int(experience)
+        self.__experience = experience
 
     def get_role(self) -> str:
         return self.__role
@@ -28,13 +27,14 @@ class Operator(Member):
             "pilote": "prend les commandes.",
             "marchand": "négocie les prix.",
             "armurier": "prépare l'armement.",
-            "commandant": "donne ses ordres."
+            "commandant": "donne ses ordres.",
         }
         action = actions.get(self.__role.lower(), "agit.")
-        # ⬇️ utilisation des getters de Member
+        # utilisation des getters de Member
+
         message = f"{self.get_first_name()} {self.get_last_name()} {action}"
         print(message)
         return message
 
     def gain_experience(self) -> None:
-        self.__experience += 1
+        self.__experience = self.__experience + 1

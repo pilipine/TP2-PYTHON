@@ -1,35 +1,3 @@
-# list de membres d'équipage
-crew = [
-    {
-        "first_name": "Bel",
-        "last_name": "Riose",
-        "gender": "homme",
-        "age": 48,
-        "role": "commandant",
-    },
-    {
-        "first_name": "Gaal",
-        "last_name": "Dornick",
-        "gender": "Femme",
-        "age": 34,
-        "role": "technicien",
-    },
-    {
-        "first_name": "Salvor",
-        "last_name": "Hardine",
-        "gender": "femme",
-        "age": 29,
-        "role": "armurier",
-    },
-    {
-        "first_name": "Gaal",
-        "last_name": "Dornick",
-        "gender": "femme",
-        "age": 34,
-        "role": "technicien",
-    },
-    # Etc.
-]
 # Attribut des membres de l'équipage
 class Member:
     def __init__(self, first_name: str, last_name: str, gender: str, age: int):
@@ -40,8 +8,11 @@ class Member:
 
     # méthode
     def introduce_yourself(self) -> str:
-        return f"Je m'appelle {self.__first_name}{self.__last_name}, je suis { self.__gender} de {self.__age}ans."
-    
+        article = "un"
+        if self.__gender == "femme":
+            article = "une"
+        return f"Je m'appelle {self.__first_name} {self.__last_name}, je suis {article} { self.__gender} de {self.__age} ans."
+
     # Getters des attributs des membres de l'équipe
     def get_first_name(self) -> str:
         return self.__first_name
@@ -67,5 +38,3 @@ class Member:
 
     def set_age(self, new_set_age):
         self.__age = new_set_age
-
-

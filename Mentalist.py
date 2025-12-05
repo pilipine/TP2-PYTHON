@@ -1,7 +1,7 @@
 
 # Import de la classe Member depuis son module
 from Member import Member
-from Operateur import Operateur  
+from Operator import Operateur  
 
 
 class Mentalist(Member):
