@@ -11,7 +11,7 @@ class Member:
         article = "un"
         if self.__gender == "femme":
             article = "une"
-        return f"Je m'appelle {self.__first_name} {self.__last_name}, je suis {article} { self.__gender} de {self.__age} ans."
+        return f"Je m'appelle {self.__first_name} {self.__last_name}, je suis {article} {self.__gender} de {self.__age} ans."
 
     # Getters des attributs des membres de l'équipe
     def get_first_name(self) -> str:
@@ -38,3 +38,5 @@ class Member:
 
     def set_age(self, new_set_age):
         self.__age = new_set_age
+
+
