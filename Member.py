@@ -38,5 +38,3 @@ class Member:
 
     def set_age(self, new_set_age):
         self.__age = new_set_age
-
-
