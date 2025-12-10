@@ -1,32 +1,36 @@
 # Attribut des membres de l'équipage
 class Member:
-    def __init__(self, first_name: str, last_name: str, gender: str, age: int):
+
+    def __init__(self, first_name, last_name, gender, age):
         self.__first_name = first_name
         self.__last_name = last_name
         self.__gender = gender
-        self.__age = age
+        self.__age = int(age)
 
-    # méthode
-    def introduce_yourself(self) -> str:
+    # Méthode
+    def introduce_yourself(self):
+        g = str(self.__gender)
         article = "un"
-        if self.__gender == "femme":
+        if g == "femme":
             article = "une"
-        return f"Je m'appelle {self.__first_name} {self.__last_name}, je suis {article} {self.__gender} de {self.__age} ans."
+        print(
+            f"Je m'appelle {self.__first_name} {self.__last_name}, je suis {article} {self.__gender} de {self.__age} ans."
+        )
 
-    # Getters des attributs des membres de l'équipe
-    def get_first_name(self) -> str:
+    # Getters
+    def get_first_name(self):
         return self.__first_name
 
-    def get_last_name(self) -> str:
+    def get_last_name(self):
         return self.__last_name
 
-    def get_gender(self) -> str:
+    def get_gender(self):
         return self.__gender
 
-    def get_age(self) -> int:
+    def get_age(self):
         return self.__age
 
-    # Setters des attributs des membres de l'équipe
+    # Setters
     def set_first_name(self, new_first_name):
         self.__first_name = new_first_name
 
@@ -37,4 +41,9 @@ class Member:
         self.__gender = new_set_gender
 
     def set_age(self, new_set_age):
-        self.__age = new_set_age
+        self.__age = int(new_set_age)
+
+
+# Instancier un nouveau membre
+Bel_riose = Member("Bel", "Riose", "Homme", 48)
+Bel_riose.introduce_yourself()

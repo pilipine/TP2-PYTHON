@@ -1,38 +1,35 @@
-# Import de la classe Member depuis son module
+# Import de la classe Member
+from Member import *  # ou: from classes.member import Member
 
 
 class Operator(Member):
     def __init__(self, first_name, last_name, gender, age, role, experience=0):
         super().__init__(first_name, last_name, gender, age)
         self.__role = role
-        self.__experience = experience
+        self.__experience = int(experience)
 
-    def get_role(self) -> str:
+    # Getters
+    def get_role(self):
         return self.__role
 
-    def get_experience(self) -> int:
+    def get_experience(self):
         return self.__experience
 
-    def set_role(self, new_role: str) -> None:
+    # Setters
+    def set_role(self, new_role):
         self.__role = new_role
 
-    def set_experience(self, new_experience: int) -> None:
+    def set_experience(self, new_experience):
         self.__experience = int(new_experience)
 
-    def act(self) -> str:
-        actions = {
-            "technicien": "effectue une maintenance.",
-            "pilote": "prend les commandes.",
-            "marchand": "négocie les prix.",
-            "armurier": "prépare l'armement.",
-            "commandant": "donne ses ordres.",
-        }
-        action = actions.get(self.__role.lower(), "agit.")
-        # utilisation des getters de Member
+    # Définition d'une méthode qui dit ce que fait l'Operator selon son role
+    def act(self):
+        if self.get_role() == "pilot":
+            print(f"{self.get_first_name()} {self.get_last_name()} pilote le vaisseau")
+        if self.get_role().lower() == "technician":
+            print(f"{self.get_first_name()} {self.get_last_name()} répare le vaisseau")
+        else:
+            print("Ne fait rien")
 
-        message = f"{self.get_first_name()} {self.get_last_name()} {action}"
-        print(message)
-        return message
-
-    def gain_experience(self) -> None:
+    def gain_experience(self):
         self.__experience = self.__experience + 1
