@@ -1,7 +1,5 @@
 # Import de la classe Member depuis son module
 
-from Member import Member
-
 
 class Operator(Member):
     def __init__(self, first_name, last_name, gender, age, role, experience=0):

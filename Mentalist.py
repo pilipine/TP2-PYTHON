@@ -44,4 +44,3 @@ def act (self,targets):
  # Définition recharge_mana(): augmente les points de 50sans dépasser les 100
     def recharge_mana(self):
         self.augmentation_mana(RECHARGE_MANA)
-    
