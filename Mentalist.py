@@ -5,8 +5,8 @@ from Operator import Operateur
 # Constantes liées à la classe Mentalist
 MIN_MANA = 0
 MAX_MANA = 100
-TELEKINESIS_MANA_COST = 60
-RECHARGE_MANA_VALUE = 50
+NOMBRE_MANA_PERDU = 20
+RECHARGE_MANA = 50
 
 
 class Mentalist(Member):
@@ -33,4 +33,15 @@ class Mentalist(Member):
             self.__mana = MIN_MANA
 
 
-# Définition d'une méthode qui lance un sort télékinésique sur un Operator, lui faisaint dire ce qu'il fait
+# Définition act() : réduit les points de mana de 20; influence un opérateur en le forçant a agir
+def act (self,targets):
+    self.baisse_mana(NOMBRE_MANA_PERDU)
+    if targets.get_role() != None and target.get_role().lower() == "mentalist":
+            print("Je ne peux pas lancer un sort sur un mentaliste")
+    elif target.get_role() != None and target.get_role().lower() != "mentalist":
+        target.act()
+
+ # Définition recharge_mana(): augmente les points de 50sans dépasser les 100
+    def recharge_mana(self):
+        self.augmentation_mana(RECHARGE_MANA)
+    
