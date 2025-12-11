@@ -37,19 +37,6 @@ def act(self):
         case _:
             print(f"{full_name} ne fait rien")
 
-        # class role(Operator):
-# def __init__(self, role, gain_experience):
-    """ super().__init__(role, gain_experience)
-        self.__role = role
 
-        # def act(self):
-        if self.get_role() == "pilot":
-            print(f"{self.get_first_name()} {self.get_last_name()} pilote le vaisseau")
-        if self.get_role().lower() == "technician":
-            print(f"{self.get_first_name()} {self.get_last_name()} répare le vaisseau")
-        else:
-            print("Ne fait rien")
-
-        # def gain_experience(self):
-        self.__experience = self.__experience + 1
- """
+def gain_experience(self):
+    self.__experience = self.__experience + 1
