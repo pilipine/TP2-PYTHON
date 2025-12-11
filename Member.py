@@ -43,7 +43,3 @@ class Member:
     def set_age(self, new_set_age):
         self.__age = int(new_set_age)
 
-
-# Instancier un nouveau membre
-Bel_riose = Member("Bel", "Riose", "Homme", 48)
-Bel_riose.introduce_yourself()

@@ -28,7 +28,7 @@ class Operator(Member):
         full_name = f"{self.get_first_name()} {self.get_last_name()}"
         r = self.role or ""
 
-        if r in ("pilot", "pilote"):
+        if self.__role = pilote :
             print(f"{full_name} pilote le vaisseau")
         elif r in ("technician", "technicien", "technicienne"):
             print(f"{full_name} répare le vaisseau")
@@ -37,7 +37,7 @@ class Operator(Member):
 
         # class role(Operator):
         # def __init__(self, role, gain_experience):
-        super().__init__(role, gain_experience)
+        """ super().__init__(role, gain_experience)
         self.__role = role
 
         # def act(self):
@@ -50,3 +50,4 @@ class Operator(Member):
 
         # def gain_experience(self):
         self.__experience = self.__experience + 1
+ """
