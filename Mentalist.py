@@ -1,6 +1,6 @@
 # Import de la classe Member depuis son module
-from Member import Member
-from Operator import Operator
+from Member import *
+from Operator import *
 
 # Constantes liées à la classe Mentalist
 MIN_MANA = 0

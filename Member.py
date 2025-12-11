@@ -1,5 +1,5 @@
 # Attribut des membres de l'équipage
-from Operator import Operator
+
 class Member:
 
     def __init__(self, first_name, last_name, gender, age):
@@ -16,10 +16,11 @@ class Member:
             article = "une"
 
         role_affiche = self.get_role() or "non défini"
+        experience= self.__get_experience()
         print(
             f"Je m'appelle {self.__first_name} {self.__last_name}, "
             f"je suis {article} {self.__gender} de {self.__age} ans. "
-            f"Mon rôle est : {role_affiche} et mon expérience est de :{ self.__exp}."
+            f"Mon rôle est : {role_affiche} et mon expérience est de :{ self.__ex}."
         )
 
 

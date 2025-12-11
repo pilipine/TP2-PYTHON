@@ -1,8 +1,6 @@
 # spaceship.py
 # Imports des classes
-from Member import *
-from Operator import *
-from Mentalist import *
+
 
 
 class Spaceship:

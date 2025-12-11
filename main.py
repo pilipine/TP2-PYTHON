@@ -1,8 +1,8 @@
 # main.py
-from Member import Member
-from Operator import Operator
+from Member import *
+from Operator import *
 from Mentalist import Mentalist, MAX_MANA
-from Spaceship import Spaceship
+from Spaceship import *
 
 # Créer un vaisseau
 ship = Spaceship(name="Bayta", shipType="Marchand", crew=4, condition="Opérationnel")

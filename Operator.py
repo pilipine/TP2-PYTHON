@@ -1,5 +1,5 @@
 # operator.py
-from Member import Member
+from Member import *
 
 
 class Operator(Member):
