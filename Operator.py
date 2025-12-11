@@ -25,18 +25,18 @@ class Operator(Member):
     # Définition d'une méthode qui dit ce que fait l'Operator selon son role
 
 
-def act(self):
-    full_name = f"{self.get_first_name()} {self.get_last_name()}"
-    r = (self.role).lower()
+    def act(self):
+        full_name = f"{self.get_first_name()} {self.get_last_name()}"
+        r = self.get_role().lower()
 
-    match r:
-        case "pilote":
-            print(f"{full_name} pilote le vaisseau")
-        case "technicien":
-            print(f"{full_name} répare le vaisseau")
-        case _:
-            print(f"{full_name} ne fait rien")
+        match r:
+            case "pilote":
+                print(f"{full_name} pilote le vaisseau")
+            case "technicien":
+                print(f"{full_name} répare le vaisseau")
+            case _:
+                print(f"{full_name} ne fait rien")
 
 
-def gain_experience(self):
-    self.__experience = self.__experience + 1
+        def gain_experience(self):
+            self.__experience = self.__experience + 1
