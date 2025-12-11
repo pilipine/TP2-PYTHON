@@ -1,6 +1,6 @@
-# Import de la classe Member
-from Member import *
 
+# operator.py
+from Member import Member
 
 class Operator(Member):
     def __init__(self, first_name, last_name, gender, age, role, experience=0):
@@ -19,8 +19,10 @@ class Operator(Member):
     def set_role(self, new_role):
         self.__role = new_role
 
-    def set_experience(self, new_experience):
-        self.__experience = int(new_experience)
+
+    def set_experience(self, new_exp):
+        self.__experience = max(0, int(new_exp))
+
 
     # Définition d'une méthode qui dit ce que fait l'Operator selon son role
 
@@ -38,5 +40,10 @@ class Operator(Member):
                 print(f"{full_name} ne fait rien")
 
 
-        def gain_experience(self):
-            self.__experience = self.__experience + 1
+
+    # ---------- Méthodes métier ----------
+    def gain_experience(self, amount=1):
+        """
+        Incrémente l'expérience (par défaut +1).
+        """
+        self.__experience = self.__experience + int(amount)

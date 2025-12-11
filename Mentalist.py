@@ -41,6 +41,6 @@ class Mentalist(Member):
             print("Je ne peux pas lancer un sort sur un mentaliste")
         elif target.get_role() != None and target.get_role().lower() != "mentalist":target.act()
 
- # Définition recharge_mana(): augmente les points de 50sans dépasser les 100
+ # Définition recharge_mana()
     def recharge_mana(self):
         self.augmentation_mana(RECHARGE_MANA)

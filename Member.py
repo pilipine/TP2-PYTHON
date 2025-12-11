@@ -13,9 +13,14 @@ class Member:
         article = "un"
         if g == "femme":
             article = "une"
+
+        role_affiche = self.get_role() or "non défini"
         print(
-            f"Je m'appelle {self.__first_name} {self.__last_name}, je suis {article} {self.__gender} de {self.__age} ans. Mon rôle est : {self.get_role() or 'non défini'} et mon expérience est de :."
+            f"Je m'appelle {self.__first_name} {self.__last_name}, "
+            f"je suis {article} {self.__gender} de {self.__age} ans. "
+            f"Mon rôle est : {role_affiche} et mon expérience est de :."
         )
+
 
     # Getters
     def get_first_name(self):
