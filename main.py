@@ -1,11 +1,7 @@
 from Member import *
 from Operator import *
 
-
-
-# main.py
-
 # Instancier un nouveau membre
-Bel_riose = Operator("Bel", "Riose", "Homme", 48, "commmandant",)
+Bel_riose = Operator("Bel", "Riose", "Homme", 48, "commandant")
 Bel_riose.introduce_yourself()
-Bel_riose.act()
+Bel_riose.act()  # appelle bien la méthode
