@@ -74,9 +74,23 @@ Yanna_Seldon.act(Hugo_Crast)
 Joie.act(Hugo_Crast)
 
 
-from Spaceship import Spaceship
+def remove_member(self):
+    lastname = input("Entrez le prénom et le nom du membre à supprimer : ")
 
-if __name__ == "__main__":
-    bayta = Spaceship()
-    bayta.remove_member("Dornick")  # Supprime Dornick
-    bayta.remove_member("Gaal")  # Affiche un message d'erreur
+    for member in self.crew:
+        if member.lastname.lower() == lastname.lower():
+            self.crew.remove(member)
+            print(
+                f"[OK] Le membre '{member.firstname} {member.lastname}' a été supprimé."
+            )
+            return
+
+    print(f"[INFO] Aucun membre portant le nom '{lastname}' n'a été trouvé.")
+
+
+bayta.display_crew()
+
+if bayta.check_preparation():
+    print("Le vaisseau est pret à décoller.")
+else:
+    print("Le vaisseau n'est pas prêt.")

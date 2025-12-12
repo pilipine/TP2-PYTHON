@@ -1,5 +1,6 @@
 # spaceship.py
 # Imports des classes
+from Member import Member
 
 
 class Spaceship:
@@ -50,7 +51,7 @@ class Spaceship:
         has_pilot = False
         has_technician = False
 
-        for member in self.crew:
+        for member in self.get_crew():
             if hasattr(member, "get_role"):  # Vérifie que le membre a un rôle
                 role = member.get_role().lower()
                 if role == "pilote":
@@ -68,12 +69,14 @@ class Spaceship:
         else:
             return False
 
-    def __init__(self):
-        self.crew = ["Dornick", "Seldon", "Hardin"]
+    def display_crew(self):
 
-    def remove_member(self, lastname):
-        if lastname in self.crew:
-            self.crew.remove(lastname)
-            print(f"{lastname} a été supprimé de l'équipage.")
-        else:
-            print(f"Erreur : {lastname} n'est pas dans l'équipage.")
+        if not self.__crew:
+            print("[INFO] Aucun membre dans l'équipage.")
+            return
+
+        for member in self.get_crew():
+            print(
+                f"- {member.get_first_name()} {member.get_last_name()} est un.e {member.get_gender()}, "
+                f"{member.get_age()} ans au rôle de {member.get_role()}."
+            )
