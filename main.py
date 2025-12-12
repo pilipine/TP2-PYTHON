@@ -72,3 +72,11 @@ for member in bayta.get_crew():
 Tellem_Bond.act(Gaal_Dornick)
 Yanna_Seldon.act(Hugo_Crast)
 Joie.act(Hugo_Crast)
+
+
+from Spaceship import Spaceship
+
+if __name__ == "__main__":
+    bayta = Spaceship()
+    bayta.remove_member("Dornick")  # Supprime Dornick
+    bayta.remove_member("Gaal")  # Affiche un message d'erreur

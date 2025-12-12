@@ -67,3 +67,13 @@ class Spaceship:
             return True
         else:
             return False
+
+    def __init__(self):
+        self.crew = ["Dornick", "Seldon", "Hardin"]
+
+    def remove_member(self, lastname):
+        if lastname in self.crew:
+            self.crew.remove(lastname)
+            print(f"{lastname} a été supprimé de l'équipage.")
+        else:
+            print(f"Erreur : {lastname} n'est pas dans l'équipage.")
