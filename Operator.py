@@ -1,4 +1,3 @@
-# operator.py
 from Member import *
 
 
@@ -42,3 +41,9 @@ class Operator(Member):
         Incrémente l'expérience (par défaut +1).
         """
         self.__experience = self.__experience + int(amount)
+
+    def introduce_yourself(self):
+        super().introduce_yourself()
+        print(
+            f"Mon rôle est : {self.get_role()} et mon expérience est de :{  self.get_experience()}"
+        )

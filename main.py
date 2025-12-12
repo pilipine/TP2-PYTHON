@@ -3,28 +3,25 @@ from Member import *
 from Operator import *
 from Mentalist import Mentalist, MAX_MANA
 from Spaceship import *
+from Fleet import *
 
 # Créer un vaisseau
-ship = Spaceship(name="Bayta", shipType="Marchand", crew=4, condition="Opérationnel")
-ship = Spaceship(
+bayta = Spaceship("Bayta", "Marchand")
+dark_nebula = Spaceship(
     name="Dark Nebula",
-    shipType="Guerre",
-    crew="5 dont 1 mentaliste",
+    ship_type="Guerre",
+    crew=[],
     condition="Endommagé",
 )
-ship = Spaceship(
+fearless = Spaceship(
     name="Fearless",
-    shipType="Guerre",
-    crew="5 dont 1 mentaliste",
-    condition="Opérationnel",
+    ship_type="Guerre",
 )
-ship = Spaceship(
+unimara = Spaceship(
     name="Unimara",
-    shipType="Marchand",
-    crew="5 dont 1 mentaliste",
-    condition="Opérationnel",
+    ship_type="Marchand",
 )
-ship = Spaceship(name="Weinis", shipType="Marchand", crew=4, condition="Endommagé")
+weinis = Spaceship(name="Weinis", ship_type="Marchand", crew=[], condition="Endommagé")
 
 # Instancier de nouveaux membres d'équipage (Operators)
 Bel_riose = Operator("Bel", "Riose", "Homme", 48, "commandant", experience=0)
@@ -59,21 +56,17 @@ print(f"Mana de départ est de : {Joie.get_mana()}")
 Joie.recharge_mana()
 print(f"Après recharge, votre mana est de : {Joie.get_mana()}")
 
-
-# Ajoute des membres au vaisseau (capacité max 10)
-ship.append_member(Bel_riose)
-ship.append_member(Gaal_Dornick)
-ship.append_member(Salvor_Hardin)
-ship.append_member(Hugo_Crast)
-ship.append_member(Tellem_Bond)
-ship.append_member(Yanna_Seldon)
-ship.append_member(Joie)
-
+# Ajoute des membres au vaisseau (capacité max 10)bayta.append_member(Bel_riose)
+bayta.append_member(Gaal_Dornick)
+bayta.append_member(Salvor_Hardin)
+dark_nebula.append_member(Hugo_Crast)
+dark_nebula.append_member(Tellem_Bond)
+fearless.append_member(Yanna_Seldon)
+fearless.append_member(Joie)
 
 print("\n--- Équipage du vaisseau ---")
-for member in ship.crew:
+for member in bayta.get_crew():
     member.introduce_yourself()
-
 
 # Le mentaliste influence un opérateur
 Tellem_Bond.act(Gaal_Dornick)

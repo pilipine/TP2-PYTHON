@@ -38,8 +38,15 @@ class Mentalist(Member):
         if target.get_role() != None and target.get_role().lower() == "mentalist":
             print("Je ne peux pas lancer un sort sur un mentaliste")
         elif target.get_role() != None and target.get_role().lower() != "mentalist":
+            print(
+                f"{self.get_first_name()} {self.get_last_name()} influence {target.get_first_name()} {target.get_last_name()} : "
+            )
             target.act()
 
     # Définition recharge_mana()
     def recharge_mana(self):
         self.augmentation_mana(RECHARGE_MANA)
+
+    def introduce_yourself(self):
+        super().introduce_yourself()
+        print(f"Je suis mentaliste et j'ai {self.get_mana} de mana.")

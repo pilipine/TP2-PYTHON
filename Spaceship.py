@@ -2,21 +2,19 @@
 # Imports des classes
 
 
-
 class Spaceship:
-
-    def __init__(self, name, shipType, crew, condition):
+    def __init__(self, name, ship_type, crew=[], condition="Opérationnel"):
         self.__name = name
-        self.__shipType = shipType
-        self.__crew = []
+        self.__ship_type = ship_type
+        self.__crew = crew
         self.__condition = condition
 
     # --------- Getter/Setter mana ----------
-    def get_mana(self):
+    def get_name(self):
         return self.__name
 
-    def get_shiptype(self):
-        return self.__shiptype
+    def get_ship_type(self):
+        return self.__ship_type
 
     def get_crew(self):
         return self.__crew
@@ -27,8 +25,8 @@ class Spaceship:
     def set_name(self, new_name):
         self.__name = new_name
 
-    def set_shiptype(self, new_shiptype):
-        self.__shiptype = new_shiptype
+    def set_ship_type(self, new_ship_type):
+        self.__ship_type = new_ship_type
 
     def set_crew(self, new_crew):
         self.__crew = new_crew
@@ -39,12 +37,12 @@ class Spaceship:
     # Méthodes classe Spaceship
 
     def append_member(self, member):
-        if len(self.crew) >= 10:
+        if len(self.__crew) >= 10:
             print(
                 "la capacité maximale de 10 membres d'équipage par vaisseau est atteinte"
             )
             # return False
-        elif self.crew.append(member):
+        elif self.__crew.append(member):
             print("Bienvenue à bord")
             # return True
 

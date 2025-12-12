@@ -1,125 +1,55 @@
-
-# fleet.py
-from typing import List, Dict
-from Spaceship import Spaceship
-from operator import Operator
-from Mentalist import Mentalist
-from Member import Member
+from Operator import *
+from Mentalist import *
+from Spaceship import *
 
 
 class Fleet:
-    """
-    Modélise une flotte de vaisseaux.
+    def __init__(self, name, Spaceship):
+        self.__name = name
+        self.__Spaceship = []
 
-    Attributs :
-      - name (str)                : nom de la flotte
-      - spaceships (list[Spaceship]) : liste des vaisseaux (initialisée vide)
+    # --------- Getter/Setter mana ----------
+    def get_name(self):
+        return self.__name
 
-    Méthodes :
-      - append_spaceship(spaceship: Spaceship) -> bool
-          Ajoute un vaisseau si la capacité max (15) n'est pas dépassée et si l'objet est valide.
-      - statistics() -> dict
-          Calcule des infos sur la flotte :
-            * nombre total de vaisseaux
-            * nombre total de membres
-            * répartition des rôles (operators)
-            * moyenne d'expérience des opérateurs
-            * nombre de mentalistes et mentalistes avec mana >= 50
-      - display() -> None
-          Affiche un aperçu de la flotte et des vaisseaux.
-    """
+    def get_Spaceship(self):
+        return self.__Spaceship
 
-    def __init__(self, name: str):
-        self.name = name
-        self.spaceships: List[Spaceship] = []
+    def set_name(self, new_name):
+        self.__name = new_name
 
-    # ---------- Ajout d'un vaisseau ----------
-    def append_spaceship(self, spaceship: Spaceship) -> bool:
-        """Ajoute un vaisseau si la capacité (15) n'est pas dépassée et si le type est valide."""
-        if not isinstance(spaceship, Spaceship):
-            print("[WARN] Seuls des objets Spaceship sont autorisés dans la flotte.")
-            return False
+    def set_Spaceship(self, new_Spaceship):
+        self.__ship_type = new_Spaceship
 
-        if len(self.spaceships) >= 15:
-            print("[WARN] Capacité maximale de 15 vaisseaux atteinte pour la flotte.")
-            return False
+    # Définition d'une méthode qui ajoute un vaisseau à la flotte
+    def append_spaceships(self, Spaceships):
+        if len(self.__Spaceships) > 15:
+            print("Ce vaisseaux ne peut pas être ajouter de flotte")
 
-        self.spaceships.append(spaceship)
-        print(f"[INFO] Le vaisseau '{spaceship.name}' a rejoint la flotte '{self.name}'.")
-        return True
-
-    # ---------- Statistiques globales ----------
-    def statistics(self) -> Dict[str, object]:
-        """
-        Retourne un dictionnaire d'informations agrégées sur la flotte
-        et affiche un résumé lisible en console.
-        """
-        total_vessels = len(self.spaceships)
+    # Définition d'une méthode renvoyant un dictionnaire avec les statistiques de l'équipage de chaque vaisseau de la flotte
+    def statistics(self):
+        total_experience = 0
         total_members = 0
+        role_member = {"mentalist": 0, "operator": 0}
+        for spaceship in self.__Spaceships:
+            for member in spaceship.get_crew():
+                if type(member) is Operator:
+                    total_experience += member.get_experience()
+                    role = member.get_role().lower()
+                    if role not in role_member:
+                        role_member[role] = 1
+                    else:
+                        role_member[role] += 1
+                total_members += 1
+                if type(member) is Mentalist:
+                    role_member["mentalist"] += 1
 
-        role_distribution: Dict[str, int] = {}
-        operator_count = 0
-        operator_xp_sum = 0
+        average_experience = (
+            total_experience / total_members if total_members > 0 else 0
+        )
 
-        mentalist_count = 0
-        mentalist_50_count = 0
-
-        for ship in self.spaceships:
-            total_members += len(ship.crew)
-
-            for m in ship.crew:
-                # ---- Opérateurs ----
-                if isinstance(m, Operator):
-                    operator_count += 1
-
-                    # Rôle (via getter ou attribut)
-                    role = m.get_role() if hasattr(m, "get_role") else getattr(m, "role", "")
-                    role = (role or "").lower()
-                    role_distribution[role] = role_distribution.get(role, 0) + 1
-
-                    # Expérience
-                    xp = m.get_experience() if hasattr(m, "get_experience") else getattr(m, "experience", 0)
-                    operator_xp_sum += int(xp)
-
-                # ---- Mentalistes ----
-                if isinstance(m, Mentalist):
-                    mentalist_count += 1
-                    mana = m.get_mana() if hasattr(m, "get_mana") else getattr(m, "mana", 0)
-                    if mana >= 50:
-                        mentalist_50_count += 1
-
-        operator_xp_avg = (operator_xp_sum / operator_count) if operator_count > 0 else 0.0
-
-        stats = {
-            "fleet_name": self.name,
-            "total_vessels": total_vessels,
-            "total_members": total_members,
-            "role_distribution": role_distribution,
-            "operator_count": operator_count,
-            "operator_experience_avg": round(operator_xp_avg, 2),
-            "mentalists": mentalist_count,
-            "mentalists_mana_50_plus": mentalist_50_count,
+        return {
+            "nombre_de_vaisseaux": len(self.__Spaceships),
+            "moyenne_experience": average_experience,
+            "repartition_roles": role_member,
         }
-
-        # Affichage lisible (optionnel)
-        print(f"\n=== Statistiques de la flotte '{self.name}' ===")
-        print(f"Vaisseaux : {total_vessels}")
-        print(f"Membres   : {total_members}")
-        print(f"Opérateurs: {operator_count} | XP moyenne: {stats['operator_experience_avg']}")
-        print(f"Répartition des rôles : {role_distribution}")
-        print(f"Mentalistes : {mentalist_count} | Mana ≥ 50 : {mentalist_50_count}")
-        print("=============================================\n")
-
-        return stats
-
-    # ---------- Affichage d'ensemble ----------
-    def display(self) -> None:
-        """Affiche un aperçu de la flotte et de ses vaisseaux."""
-        if not self.spaceships:
-            print(f"La flotte '{self.name}' ne contient aucun vaisseau.")
-            return
-
-        print(f"--- Flotte '{self.name}' ---")
-        for ship in self.spaceships:
-            print(f"* {ship.name} ({ship.shipType}, {ship.condition}) - Équipage: {len(ship.crew)}")
-        print("----------------------------")

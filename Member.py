@@ -1,7 +1,7 @@
 # Attribut des membres de l'équipage
 
-class Member:
 
+class Member:
     def __init__(self, first_name, last_name, gender, age):
         self.__first_name = first_name
         self.__last_name = last_name
@@ -10,19 +10,16 @@ class Member:
 
     # Méthode
     def introduce_yourself(self):
-        g = str(self.__gender)
         article = "un"
-        if g == "femme":
+        if self.__gender.lower() == "femme":
             article = "une"
 
-        role_affiche = self.get_role() or "non défini"
-        experience= self.__get_experience()
+        """ role_affiche = self.get_role() or "non défini" """
         print(
             f"Je m'appelle {self.__first_name} {self.__last_name}, "
             f"je suis {article} {self.__gender} de {self.__age} ans. "
-            f"Mon rôle est : {role_affiche} et mon expérience est de :{ self.__ex}."
+            # f"Mon rôle est : {role_affiche} et mon expérience est de :{  self.get_experience()}."
         )
-
 
     # Getters
     def get_first_name(self):
