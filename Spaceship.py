@@ -134,13 +134,16 @@ class Spaceship:
                     if hasattr(m, "get_role")
                     else getattr(m, "role", "membre")
                 )
+                article = "un"
+                if self.__gender.lower() == "femme":
+                    article = "une"
                 print(
                     f"- {fname} {lname} est un.e {gender.lower()} de {age} ans au rôle de {role}."
                 )
             elif isinstance(m, Mentalist):
                 mana = m.get_mana() if hasattr(m, "get_mana") else getattr(m, "mana", 0)
                 print(
-                    f"- {fname} {lname} est un.e {gender.lower()} de {age} ans avec {mana} de mana."
+                    f"- {fname} {lname} est {article} {gender.lower()} de {age} ans avec {mana} de mana."
                 )
             else:
                 # Autres types éventuels héritant de Member
