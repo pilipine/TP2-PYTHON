@@ -72,64 +72,110 @@ class Spaceship:
         print(f"Bienvenue à bord, {fname} {lname} du vaisseau {self.get_name()} !")
         return True
 
-    # --- Supprimer un membre par NOM DE FAMILLE (lastname) ---
-    def remove_member(self, lastname: str) -> bool:
+    def remove_member(self, last_name):
         """
-        Supprime le PREMIER membre trouvé dont le nom de famille correspond (insensible à la casse).
-        Utilise list.remove() pour retirer l'objet exact.
-        Retourne True si suppression faite, sinon False.
+        Supprime le premier membre dont le nom de famille (last_name) correspond.
+        Retourne True si supprimé, False sinon.
         """
-        # 1) Trouver l'objet membre à supprimer
-        to_remove = None
-        for m in self.__crew:
-            if m.lastname.lower() == lastname.lower():
-                to_remove = m
-                break
-
-        # 2) Si trouvé → utiliser list.remove(objet)
-        if to_remove is not None:
-            self.__crew.remove(to_remove)  # <- méthode remove()
-            print(
-                f"[OK] {to_remove.firstname} {to_remove.lastname} a été supprimé du vaisseau {self.get_name()}."
+        target = str(last_name).strip().lower()
+        for i, m in enumerate(self.__crew):
+            # Récupère le last_name via getter si dispo, sinon attribut direct
+            lname = (
+                m.get_last_name()
+                if hasattr(m, "get_last_name")
+                else getattr(m, "lastname", "") or ""
             )
-            return True
-
-        # 3) Sinon informer
+            if str(lname).strip().lower() == target:
+                removed = self.__crew.pop(i)
+                # Affiche confirmation
+                fname = (
+                    removed.get_first_name()
+                    if hasattr(removed, "get_first_name")
+                    else getattr(removed, "firstname", "")
+                )
+                print(
+                    f"[OK] {fname} {lname} a été supprimé de l'équipage du vaisseau {self.get_name()}."
+                )
+                return True
         print(
-            f"[INFO] Aucun membre avec le nom '{lastname}' trouvé dans {self.get_name()}."
+            f"[INFO] Aucun membre avec le nom de famille '{last_name}' n'a été trouvé dans l'équipage de {self.get_name()}."
         )
         return False
 
-    # --- Variante interactive (demande le nom via input) ---
-    def remove_member_input(self) -> bool:
+    def display_crew(self):
+        print(
+            f"\n--- Équipage du vaisseau {self.get_name()} ({self.get_ship_type()}) ---"
+        )
+        if not self.__crew:
+            print("(aucun membre)")
+            return
+
+        for m in self.__crew:
+            # Récupération des champs de base avec getters ou attributs
+            fname = (
+                m.get_first_name()
+                if hasattr(m, "get_first_name")
+                else getattr(m, "firstname", "")
+            )
+            lname = (
+                m.get_last_name()
+                if hasattr(m, "get_last_name")
+                else getattr(m, "lastname", "")
+            )
+            gender = (
+                m.get_gender() if hasattr(m, "get_gender") else getattr(m, "gender", "")
+            )
+            age = m.get_age() if hasattr(m, "get_age") else getattr(m, "age", "")
+
+            # Cas spécifique selon le type
+            if isinstance(m, Operator):
+                role = (
+                    m.get_role()
+                    if hasattr(m, "get_role")
+                    else getattr(m, "role", "membre")
+                )
+                print(
+                    f"- {fname} {lname} est un.e {gender.lower()} de {age} ans au rôle de {role}."
+                )
+            elif isinstance(m, Mentalist):
+                mana = m.get_mana() if hasattr(m, "get_mana") else getattr(m, "mana", 0)
+                print(
+                    f"- {fname} {lname} est un.e {gender.lower()} de {age} ans avec {mana} de mana."
+                )
+            else:
+                # Autres types éventuels héritant de Member
+                print(
+                    f"- {fname} {lname} est un.e {gender.lower()} de {age} ans (membre d’équipage)."
+                )
+
+    def check_preparation(self):
         """
-        Demande à l'utilisateur le NOM DE FAMILLE à supprimer puis appelle remove_member().
+        Vérifie qu'au moins un pilote et un technicien sont présents à bord.
+        Retourne True si le vaisseau est prêt, sinon False.
         """
-        lastname = input(
-            "Quel est le NOM DE FAMILLE (lastname) du membre à supprimer ? "
-        ).strip()
-        if not lastname:
-            print("[ERR] Le nom de famille ne peut pas être vide.")
-            return False
+        has_pilot = False
+        has_technician = False
 
-    # def check_preparation(self):
-    # has_pilot = False
-    # has_technician = False
+        for m in self.__crew:
+            # On ne s'intéresse qu'aux Operators (les Mentalists n'ont pas de rôle métier)
+            if isinstance(m, Operator):
+                # Récupération du rôle via getter si dispo, sinon attribut
+                role = (
+                    m.get_role()
+                    if hasattr(m, "get_role")
+                    else getattr(m, "role", "") or ""
+                )
+                r = str(role).strip().lower()
 
-    # for member in self.get_crew():
-    # if hasattr(member, "get_role"):  # Vérifie que le membre a un rôle
-    # role = member.get_role().lower()
-    # if role == "pilote":
-    # has_pilot = True
-    # elif role == "technicien":
-    # has_technician = True
+                # Normalisation simple : accepte 'pilote' et 'technicien'
+                if r == "pilote":
+                    has_pilot = True
+                elif r == "technicien":
+                    has_technician = True
 
-    # Si les deux sont trouvés
-    # if has_pilot and has_technician:
-    # return True
+                # Early exit si les deux sont déjà trouvés
+                if has_pilot and has_technician:
+                    return True
 
-    # Après la boucle, on retourne True seulement si les deux sont présents
-    # if has_pilot and has_technician:
-    # return True
-    # else:
-    # return False
+        # Si on sort de la boucle sans avoir les deux rôles requis
+        return False

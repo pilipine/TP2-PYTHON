@@ -50,4 +50,3 @@ class Mentalist(Member):
     def introduce_yourself(self):
         super().introduce_yourself()
         print(f"Je suis mentaliste et j'ai {self.get_mana()} de mana.")
-

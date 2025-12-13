@@ -5,7 +5,8 @@ from Mentalist import Mentalist, MAX_MANA
 from Spaceship import *
 from Fleet import *
 
-# Instanciation de la classe Staceship (Créer un vaisseau)
+
+# Instanciation de la classe Staceship
 bayta = Spaceship("Bayta", "Marchand")
 dark_nebula = Spaceship(
     name="Dark Nebula",
@@ -68,13 +69,8 @@ fearless.append_member(Yanna_Seldon)
 fearless.append_member(Joie)
 
 
-print("\n--- Équipage du vaisseau Bayta ---")
-for member in bayta.get_crew():
-    member.introduce_yourself()
-for member in dark_nebula.get_crew():
-    member.introduce_yourself()
-for member in fearless.get_crew():
-    member.introduce_yourself()
+# Créer la flotte (selon la signature corrigée de Fleet)
+fleet = Fleet("Galactica", [bayta, dark_nebula, fearless, unimara, weinis])
 
 
 # Le mentaliste influence un opérateur
@@ -82,99 +78,142 @@ Tellem_Bond.act(Gaal_Dornick)
 Yanna_Seldon.act(Hugo_Crast)
 Joie.act(Hugo_Crast)
 
-# supprime un membre de l'équipage
-bayta.remove_member("Dornick")
 
-# Afficher équipage
-bayta.display_crew()
+# --- Choisir le vaisseau ciblé ---
+print("\nSur quel vaisseau voulez-vous agir ?")
+print("1. Bayta\n2. Dark Nebula\n3. Fearless\n4. Unimara\n5. Weinis")
+choice = input("Entrez le numéro : ").strip()
 
-# Vérifier préparation
-if bayta.check_preparation():
-    print("Le vaisseau est pret à décoller.")
+ship = None
+if choice == "1":
+    ship = bayta
+elif choice == "2":
+    ship = dark_nebula
+elif choice == "3":
+    ship = fearless
+elif choice == "4":
+    ship = unimara
+elif choice == "5":
+    ship = weinis
 else:
-    print("Le vaisseau n'est pas prêt.")
+    print("[ERR] Choix invalide.")
+    ship = None
 
 
-def choose_ship_interactively(ships):
-    """
-    Demande à l'utilisateur de sélectionner un vaisseau par numéro.
-    ships : liste d'objets Spaceship
-    Retourne le vaisseau choisi ou None si erreur.
-    """
-    if not ships:
-        print("[ERR] Aucun vaisseau disponible.")
-        return None
+# ======= menu interactif =======
+while True:
+    print("\n=== Gestion de la flotte : Galactica ===")
+    print("1. Renommer la flotte")
+    print("2. Ajouter un vaisseau à la flotte")
+    print("3. Ajouter un membre d'équipage")
+    print("4. Supprimer un membre d'équipage")
+    print("5. Afficher les informations d'un équipage")
+    print("6. Vérifier la préparation d'un vaisseau")
+    print("7. Quitter")
 
-    print("\n=== Sélection du vaisseau ===")
-    for i, ship in enumerate(ships, start=1):
-        print(f"{i}. {ship.get_name()} ({ship.get_ship_type()})")
+    choice = input("Choisissez une option : ").strip()
 
-    choice = input("Entrez le numéro du vaisseau : ").strip()
-    if not choice.isdigit():
-        print("[ERR] Merci d'entrer un numéro.")
-        return None
+    if choice == "1":
+        # Renommer la flotte
+        print(f"\nNom actuel de la flotte : {fleet.get_name()}")
+        new_name = input("Nouveau nom de la flotte : ").strip()
+        if not new_name:
+            print("[INFO] Nom inchangé (entrée vide).")
+        else:
+            fleet.set_name(new_name)
+            print(f"[OK] La flotte s'appelle maintenant : {fleet.get_name()}")
 
-    idx = int(choice)
-    if idx < 1 or idx > len(ships):
-        print("[ERR] Numéro invalide.")
-        return None
+    elif choice == "2":
+        print("\n=== Ajouter un vaisseau à la flotte ===")
+        name = input("Nom du vaisseau : ").strip()
+        if not name:
+            print("[ERR] Le nom du vaisseau est obligatoire.")
+        else:
+            ship_type = (
+                input("Type (ex: Marchand, Guerre, Exploration) : ").strip()
+                or "Marchand"
+            )
+            condition = (
+                input("État (Opérationnel/Endommagé) [défaut: Opérationnel] : ").strip()
+                or "Opérationnel"
+            )
+            new_ship = Spaceship(name=name, ship_type=ship_type, condition=condition)
+        if fleet.append_ship(new_ship):  # alias add_ship si tu préfères
+            print(f"[OK] Vaisseau '{name}' ({ship_type}) ajouté.")
+        else:
+            print("[INFO] Ajout non effectué (capacité/validation).")
 
-    selected = ships[idx - 1]
-    print(f"[INFO] Vous avez sélectionné : {selected.get_name()}")
-    return selected
+    elif choice == "3":
+        # Ajoute des membres au vaisseau (capacité max 10)
 
+        print("\n=== Ajouter un membre ===")
+        first_name = input("Prénom : ").strip()
+        last_name = input("Nom : ").strip()
+        role = input("Rôle (ex: pilote, technicien...) : ").strip()
+        age = int(input("Âge : ").strip() or 0)
+        new_member = Operator(
+            first_name, last_name, "Homme/Femme", age, role, experience=0
+        )
 
-def interactive_remove_member_flow(ships):
-    """
-    1) L'utilisateur sélectionne un vaisseau (input) -> variable ship
-    2) On affiche la liste des membres (display_crew_list) -> list[]
-    3) On demande quel membre supprimer (input lastname) -> variable lastname
-    4) On supprime avec remove_member(lastname)
-    5) On affiche 'Nous avons supprimé ... du vaisseau ...' si c'est OK
-    6) On vérifie en réaffichant la liste
-    """
-    # Étape 1 : choisir un vaisseau
-    ship = choose_ship_interactively(ships)
-    if ship is None:
-        return
+        print("\nDans quel vaisseau ajouter ce membre ?")
+        print("1. Bayta\n2. Dark Nebula\n3. Fearless\n4. Unimara\n5. Weinis")
+        choice = input("Entrez le numéro : ").strip()
 
-    # Étape 2 : afficher l'équipage sous forme de list[]
-    names_before = ship.display_crew_list()
+        if choice == "1":
+            bayta.append_member(new_member)
+        elif choice == "2":
+            dark_nebula.append_member(new_member)
+        elif choice == "3":
+            fearless.append_member(new_member)
+        elif choice == "4":
+            unimara.append_member(new_member)
+        elif choice == "5":
+            weinis.append_member(new_member)
+        else:
+            print("[ERR] Choix invalide.")
 
-    # Si pas de membres, on s'arrête là
-    if not names_before:
-        return
+        print("\n--- Équipage du vaisseau Bayta ---")
+        for member in bayta.get_crew():
+            member.introduce_yourself()
+        for member in dark_nebula.get_crew():
+            member.introduce_yourself()
+        for member in fearless.get_crew():
+            member.introduce_yourself()
 
-    # Étape 3 : demander quel membre supprimer (par NOM DE FAMILLE)
-    lastname = input("\nQuel membre allons-nous supprimer (NOM DE FAMILLE) ? ").strip()
-    if not lastname:
-        print("[ERR] Nom de famille vide.")
-        return
-
-    # Étape 4 : supprimer
-    deleted = ship.remove_member(lastname)
-
-    # Étape 5 : message utilisateur
-    if deleted:
-        print(f"\nNous avons supprimé '{lastname}' du vaisseau '{ship.get_name()}'.")
-    else:
-        print(f"\nAucun membre '{lastname}' n'a été supprimé dans '{ship.get_name()}'.")
-
-    # Étape 6 : vérification (réafficher la liste et vérifier la présence du nom)
-    names_after = ship.display_crew_list()
-    if deleted:
-        # Vérif simple : le lastname ne doit plus apparaître à la fin des noms
-        still_here = any(n.split()[-1].lower() == lastname.lower() for n in names_after)
-        if not still_here:
-            print("[CHECK] Suppression vérifiée ")
+    elif choice == "4":
+        # Supprimer un membre
+        if ship is not None:
+            last_name_to_remove = input(
+                "Entrez le nom de famille du membre à supprimer : "
+            ).strip()
+        if ship.remove_member(last_name_to_remove):
+            print(
+                f"Le membre avec le nom '{last_name_to_remove}' a bien été supprimé de {ship.get_name()}."
+            )
         else:
             print(
-                "[CHECK] Attention : un membre avec ce nom de famille est encore présent (homonymes ?)"
+                f"Aucun membre avec le nom '{last_name_to_remove}' n'a été trouvé dans {ship.get_name()}."
             )
 
+    elif choice == "5":
+        # Afficher équipage
+        print("\n>>> Vérification de l'affichage des équipages :")
+        bayta.display_crew()
+        dark_nebula.display_crew()
+        fearless.display_crew()
+        unimara.display_crew()
+        weinis.display_crew()
 
-# Regroupe tes vaisseaux dans une liste
-ships = [bayta, dark_nebula, fearless, unimara, weinis]
+    elif choice == "6":
+        # Vérifier préparation
+        if ship.check_preparation():
+            print(f"{ship.get_name()} est prêt à partir !")
+        else:
+            print(f"{ship.get_name()} n’est pas prêt.")
 
-# Lance le scénario interactif
-interactive_remove_member_flow(ships)
+    elif choice == "7":
+        print("Au revoir !")
+        break
+
+    else:
+        print("[ERR] Option invalide.")
