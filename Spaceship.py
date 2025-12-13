@@ -102,54 +102,56 @@ class Spaceship:
         )
         return False
 
-    def display_crew(self):
-        print(
-            f"\n--- Équipage du vaisseau {self.get_name()} ({self.get_ship_type()}) ---"
+
+def display_crew(self):
+    print(f"\n--- Équipage du vaisseau {self.get_name()} ({self.get_ship_type()}) ---")
+    if not self.__crew:
+        print("(aucun membre)")
+        return
+
+    for m in self.__crew:
+        # Récupération des champs de base avec getters ou attributs
+        fname = (
+            m.get_first_name()
+            if hasattr(m, "get_first_name")
+            else getattr(m, "firstname", "")
         )
-        if not self.__crew:
-            print("(aucun membre)")
-            return
+        lname = (
+            m.get_last_name()
+            if hasattr(m, "get_last_name")
+            else getattr(m, "lastname", "")
+        )
+        gender = (
+            m.get_gender() if hasattr(m, "get_gender") else getattr(m, "gender", "")
+        )
+        age = m.get_age() if hasattr(m, "get_age") else getattr(m, "age", "")
 
-        for m in self.__crew:
-            # Récupération des champs de base avec getters ou attributs
-            fname = (
-                m.get_first_name()
-                if hasattr(m, "get_first_name")
-                else getattr(m, "firstname", "")
-            )
-            lname = (
-                m.get_last_name()
-                if hasattr(m, "get_last_name")
-                else getattr(m, "lastname", "")
-            )
-            gender = (
-                m.get_gender() if hasattr(m, "get_gender") else getattr(m, "gender", "")
-            )
-            age = m.get_age() if hasattr(m, "get_age") else getattr(m, "age", "")
+        # Choix de l'article en fonction du genre du MEMBRE
+        gender_str = (gender or "").strip().lower()
+        if gender_str == "femme":
+            article = "une"
+        elif gender_str == "homme":
+            article = "un"
+        else:
+            article = "un·e"
 
-            # Cas spécifique selon le type
-            if isinstance(m, Operator):
-                role = (
-                    m.get_role()
-                    if hasattr(m, "get_role")
-                    else getattr(m, "role", "membre")
-                )
-                article = "un"
-                if self.__gender.lower() == "femme":
-                    article = "une"
-                print(
-                    f"- {fname} {lname} est un.e {gender.lower()} de {age} ans au rôle de {role}."
-                )
-            elif isinstance(m, Mentalist):
-                mana = m.get_mana() if hasattr(m, "get_mana") else getattr(m, "mana", 0)
-                print(
-                    f"- {fname} {lname} est {article} {gender.lower()} de {age} ans avec {mana} de mana."
-                )
-            else:
-                # Autres types éventuels héritant de Member
-                print(
-                    f"- {fname} {lname} est un.e {gender.lower()} de {age} ans (membre d’équipage)."
-                )
+        # Cas spécifique selon le type
+        if isinstance(m, Operator):
+            role = (
+                m.get_role() if hasattr(m, "get_role") else getattr(m, "role", "membre")
+            )
+            print(
+                f"- {fname} {lname} est {article} {gender} de {age} ans au rôle de {role}."
+            )
+        elif isinstance(m, Mentalist):
+            mana = m.get_mana() if hasattr(m, "get_mana") else getattr(m, "mana", 0)
+            print(
+                f"- {fname} {lname} est {article} {gender} de {age} ans avec {mana} de mana."
+            )
+        else:
+            print(
+                f"- {fname} {lname} est {article} {gender} de {age} ans (membre d’équipage)."
+            )
 
     def check_preparation(self):
         """
