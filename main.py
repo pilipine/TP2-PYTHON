@@ -79,27 +79,6 @@ Yanna_Seldon.act(Hugo_Crast)
 Joie.act(Hugo_Crast)
 
 
-# --- Choisir le vaisseau ciblé ---
-print("\nSur quel vaisseau voulez-vous agir ?")
-print("1. Bayta\n2. Dark Nebula\n3. Fearless\n4. Unimara\n5. Weinis")
-choice = input("Entrez le numéro : ").strip()
-
-ship = None
-if choice == "1":
-    ship = bayta
-elif choice == "2":
-    ship = dark_nebula
-elif choice == "3":
-    ship = fearless
-elif choice == "4":
-    ship = unimara
-elif choice == "5":
-    ship = weinis
-else:
-    print("[ERR] Choix invalide.")
-    ship = None
-
-
 # ======= menu interactif =======
 while True:
     print("\n=== Gestion de la flotte : Galactica ===")
@@ -182,10 +161,16 @@ while True:
 
     elif choice == "4":
         # Supprimer un membre
-        if ship is not None:
-            last_name_to_remove = input(
-                "Entrez le nom de famille du membre à supprimer : "
-            ).strip()
+        ship = choose_ship(fleet)  # <— 'fleet' doit exister ici
+
+        if ship is None:
+            print("Aucun vaisseau sélectionné.")
+            continue  # on est dans la boucle du menu
+
+        last_name_to_remove = input(
+            "Entrez le nom de famille du membre à supprimer : "
+        ).strip()
+
         if ship.remove_member(last_name_to_remove):
             print(
                 f"Le membre avec le nom '{last_name_to_remove}' a bien été supprimé de {ship.get_name()}."
@@ -205,11 +190,13 @@ while True:
         weinis.display_crew()
 
     elif choice == "6":
-        # Vérifier préparation
-        if ship.check_preparation():
-            print(f"{ship.get_name()} est prêt à partir !")
-        else:
-            print(f"{ship.get_name()} n’est pas prêt.")
+        ship = choose_ship(fleet)
+        if ship is None:
+            print("Aucun vaisseau sélectionné.")
+            continue
+
+        ready, msg = ship.check_preparation()
+        print(msg)
 
     elif choice == "7":
         print("Au revoir !")

@@ -85,3 +85,32 @@ class Fleet:
             "repartition_roles": role_member,
             "total_membres": total_members,
         }
+
+
+def choose_ship(fleet):
+    """Sélection simple dans une liste de vaisseaux ou un objet Fleet."""
+    # Récupérer la liste de vaisseaux selon ce qui est passé
+    items = fleet.get_spaceships() if isinstance(fleet, Fleet) else fleet
+
+    if not items:
+        print("Aucun vaisseau disponible.")
+        return None
+
+    print("\nListe des vaisseaux :")
+    for i, s in enumerate(items, start=1):
+        # suppose que Spaceship a get_name() et get_ship_type()
+        print(f"{i}. {s.get_name()} ({s.get_ship_type()})")
+
+    raw = input("Choisissez un numéro (Enter pour annuler) : ").strip()
+    if not raw:
+        return None
+    if not raw.isdigit():
+        print("Entrée invalide.")
+        return None
+
+    idx = int(raw)
+    if not (1 <= idx <= len(items)):
+        print("Numéro hors plage.")
+        return None
+
+    return items[idx - 1]
