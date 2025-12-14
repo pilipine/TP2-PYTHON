@@ -152,7 +152,6 @@ class Spaceship:
                     f"- {fname} {lname} est {article} {gender} de {age} ans (membre d’équipage)."
                 )
 
-
     def check_preparation(self):
         has_pilot = False
         has_technician = False
@@ -162,8 +161,11 @@ class Spaceship:
             # On ne considère que les Operators pour les rôles
             # (les Mentalists n'ont pas de rôle de "pilote/technicien")
             from Operator import Operator
+
             if isinstance(m, Operator):
-                role_val = m.get_role() if hasattr(m, "get_role") else getattr(m, "role", "")
+                role_val = (
+                    m.get_role() if hasattr(m, "get_role") else getattr(m, "role", "")
+                )
                 role = (role_val or "").strip().lower()
 
                 if role == "pilote":
@@ -177,11 +179,20 @@ class Spaceship:
 
         # Messages explicites si ça manque
         if not has_pilot and not has_technician:
-            return False, f"{self.get_name()} ne peut pas décoller : aucun pilote et aucun technicien à bord."
+            return (
+                False,
+                f"{self.get_name()} ne peut pas décoller : aucun pilote et aucun technicien à bord.",
+            )
         if not has_pilot:
-            return False, f"{self.get_name()} ne peut pas décoller : aucun pilote à bord."
+            return (
+                False,
+                f"{self.get_name()} ne peut pas décoller : aucun pilote à bord.",
+            )
         if not has_technician:
-            return False, f"{self.get_name()} ne peut pas décoller : aucun technicien à bord."
+            return (
+                False,
+                f"{self.get_name()} ne peut pas décoller : aucun technicien à bord.",
+            )
 
         # Sécurité (ne devrait pas arriver si on a bien couvert tous les cas)
         return False, f"{self.get_name()} ne peut pas décoller."

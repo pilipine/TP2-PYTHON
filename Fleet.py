@@ -36,7 +36,9 @@ class Fleet:
         """
         # Vérifier que ship a les méthodes nécessaires
         required_methods = ("get_name", "get_ship_type", "get_condition")
-        if not all(hasattr(ship, m) and callable(getattr(ship, m)) for m in required_methods):
+        if not all(
+            hasattr(ship, m) and callable(getattr(ship, m)) for m in required_methods
+        ):
             print("[ERR] Doit être un objet de type Spaceship (méthodes manquantes).")
             return False
 
@@ -47,7 +49,10 @@ class Fleet:
 
         # Unicité (optionnel)
         ship_name = ship.get_name()
-        if any(s.get_name().strip().lower() == ship_name.strip().lower() for s in self.__spaceships):
+        if any(
+            s.get_name().strip().lower() == ship_name.strip().lower()
+            for s in self.__spaceships
+        ):
             print(f"[INFO] Un vaisseau nommé '{ship_name}' existe déjà dans la flotte.")
             return False
 
@@ -58,8 +63,10 @@ class Fleet:
             return False
         type_norm = ship_type.strip().capitalize()
         if type_norm not in ALLOWED_SHIP_TYPES:
-            print(f"[ERR] Type invalide: '{ship_type}'. "
-                  f"Valeurs autorisées: {', '.join(sorted(ALLOWED_SHIP_TYPES))}.")
+            print(
+                f"[ERR] Type invalide: '{ship_type}'. "
+                f"Valeurs autorisées: {', '.join(sorted(ALLOWED_SHIP_TYPES))}."
+            )
             return False
 
         # Validation état
@@ -73,8 +80,10 @@ class Fleet:
         elif cond_norm == "endommage":
             condition = "Endommagé"
         if condition not in ALLOWED_CONDITIONS:
-            print(f"[ERR] État invalide: '{condition}'. "
-                  f"Valeurs autorisées: {', '.join(sorted(ALLOWED_CONDITIONS))}.")
+            print(
+                f"[ERR] État invalide: '{condition}'. "
+                f"Valeurs autorisées: {', '.join(sorted(ALLOWED_CONDITIONS))}."
+            )
             return False
 
         # Ajout
@@ -106,7 +115,9 @@ class Fleet:
                 elif isinstance(member, Mentalist):
                     role_member["mentalist"] += 1
 
-        average_experience = (total_experience / operator_count) if operator_count > 0 else 0
+        average_experience = (
+            (total_experience / operator_count) if operator_count > 0 else 0
+        )
 
         return {
             "nombre_de_vaisseaux": len(self.__spaceships),
