@@ -6,10 +6,6 @@ from Spaceship import Spaceship
 
 class Fleet:
     def __init__(self, name, spaceships=None):
-        """
-        name: str
-        spaceships: iterable de Spaceship ou None
-        """
         self.__name = name
         self.__spaceships = list(spaceships) if spaceships is not None else []
 
@@ -29,18 +25,58 @@ class Fleet:
             raise TypeError("Tous les éléments doivent être des Spaceship.")
         self.__spaceships = list(new_spaceships)
 
-    # --------- Ajout d'un vaisseau ----------
-    def append_ship(self, ship):
-        """Ajoute un vaisseau (capacité max 15). Retourne True/False."""
-        if not isinstance(ship, Spaceship):
-            print("[ERR] Doit être une instance de Spaceship.")
-            return False
-        if len(self.__spaceships) >= 15:
-            print("[WARN] Capacité max de 15 vaisseaux atteinte.")
-            return False
-        self.__spaceships.append(ship)
-        print(f"[OK] '{ship.get_name()}' ajouté à la flotte '{self.get_name()}'.")
-        return True
+
+
+ALLOWED_SHIP_TYPES = {"Marchand", "Guerre", "Exploration"}
+ALLOWED_CONDITIONS = {"Opérationnel", "Endommagé"}
+
+def append_ship(self, ship):
+    # Vérifier que ship a les méthodes nécessaires
+    required_methods = ("get_name", "get_type", "get_condition")
+    if not all(hasattr(ship, m) and callable(getattr(ship, m)) for m in required_methods):
+        print("[ERR] Doit être un objet de type Spaceship (méthodes manquantes).")
+        return False
+
+    # Capacité
+    if len(self.__spaceships) >= 15:
+        print("[WARN] Capacité max de 15 vaisseaux atteinte.")
+        return False
+
+    # Unicité (optionnel)
+    ship_name = ship.get_name()
+    if any(s.get_name().strip().lower() == ship_name.strip().lower() for s in self.__spaceships):
+        print(f"[INFO] Un vaisseau nommé '{ship_name}' existe déjà dans la flotte.")
+        return False
+
+    # Validation type
+    ship_type = ship.get_type()
+    if not ship_type or ship_type.strip() == "":
+        print("[ERR] Type de vaisseau manquant.")
+        return False
+    if ship_type.capitalize() not in ALLOWED_SHIP_TYPES:
+        print(f"[ERR] Type invalide: '{ship_type}'. "
+              f"Valeurs autorisées: {', '.join(sorted(ALLOWED_SHIP_TYPES))}.")
+        return False
+
+    # Validation état
+    condition = ship.get_condition()
+    if not condition or condition.strip() == "":
+        print("[ERR] État du vaisseau manquant.")
+        return False
+    cond_norm = condition.lower().replace("é", "e")
+    if cond_norm == "operationnel":
+        condition = "Opérationnel"
+    elif cond_norm == "endommage":
+        condition = "Endommagé"
+    if condition not in ALLOWED_CONDITIONS:
+        print(f"[ERR] État invalide: '{condition}'. "
+              f"Valeurs autorisées: {', '.join(sorted(ALLOWED_CONDITIONS))}.")
+        return False
+
+    # Ajout
+    self.__spaceships.append(ship)
+    print(f"[OK] '{ship.get_name()}' ajouté à la flotte '{self.get_name()}'.")
+    return True
 
     # Alias optionnel pour compat avec d'autres appels
     def add_ship(self, ship):
@@ -48,13 +84,7 @@ class Fleet:
 
     # --------- Statistiques ----------
     def statistics(self):
-        """
-        Retourne un dict avec :
-        - nombre_de_vaisseaux
-        - moyenne_experience_operator (moyenne d'expérience des Operators uniquement)
-        - repartition_roles (comptage par rôle + totaux operator/mentalist)
-        - total_membres
-        """
+       
         total_experience = 0
         operator_count = 0
         total_members = 0
