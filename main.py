@@ -83,13 +83,14 @@ while True:
     print(f"\n=== Gestion de la flotte : {fleet.get_name()} ===")
     print("1. Renommer la flotte")
     print("2. Ajouter un vaisseau à la flotte")
-    print("3. Ajouter un membre d'équipage")
-    print("4. Supprimer un membre d'équipage")
-    print("5. Afficher les informations d'un équipage")
+    print("3. Ajouter un membre d'équipage dans une vaisseau")
+    print("4. Supprimer un membre d'équipage dans un vaisseau")
+    print("5. Afficher les informations d'un équipage d'un vaisseau en particulier")
     print("6. Vérifier la préparation d'un vaisseau")
     print("7. Sauvegarde de la flotte (JSON)")
     print("8. Charger une flotte (JSON)")
     print("9. Quitter")
+    print("10. Lancer une mission galactique")
 
     choice = input("Choisissez une option : ").strip()
 
@@ -174,7 +175,7 @@ while True:
         if ship is None:
             print("Aucun vaisseau sélectionné.")
             continue
-        ready, msg = ship.check_preparation()  
+        ready, msg = ship.check_preparation()
         print(msg)
 
     elif choice == "7":
@@ -189,19 +190,28 @@ while True:
         except Exception as e:
             print(f" Erreur de sauvegarde: {e}")
 
-    
     elif choice == "8":
-        file_name = input("Nom du fichier JSON à charger (ex: data/fleet.json): ").strip() or "data/fleet.json"
+        file_name = (
+            input("Nom du fichier JSON à charger (ex: data/fleet.json): ").strip()
+            or "data/fleet.json"
+        )
         try:
             fleet = load_data(file_name)  # on remplace la flotte courante
             print(f" Flotte chargée depuis {file_name}")
         except Exception as e:
             print(f" Erreur de chargement: {e}")
 
-
     elif choice == "9":
         print("Au revoir !")
         break
+
+    elif choice == "10":
+        # Lancer une mission galactique
+        ship = choose_ship(fleet)
+        if ship is None:
+            print("Aucun vaisseau sélectionné.")
+            continue
+        run_mission(ship)
 
     else:
         print("[ERR] Option invalide.")
