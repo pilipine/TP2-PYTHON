@@ -154,7 +154,11 @@ while True:
         gender = gender.strip()
         if member_type == "1":
             # ==== Opérateur ====
-            role = input("Rôle (ex: pilote, technicien...) : ").strip().lower()
+            role = (
+                input("Rôle (ex: pilote, technicien, commandant, armurier) : ")
+                .strip()
+                .lower()
+            )
             age_str = input("Âge : ").strip()
             try:
                 age = int(age_str) if age_str else 0
@@ -183,7 +187,7 @@ while True:
 
             mana_str = input("Mana initial (entier, entre 0-100) : ").strip()
             try:
-                
+
                 mana = int(mana_str)
             except ValueError:
                 print("[ERR] Le mana doit être un ENTIER. Opération annulée.")
@@ -191,7 +195,9 @@ while True:
 
             # 2) Vérifier la plage autorisée
             if mana < 0 or mana > 100:
-                print("[ERR] Le mana doit être compris entre 0 et 100 inclus. Opération annulée.")
+                print(
+                    "[ERR] Le mana doit être compris entre 0 et 100 inclus. Opération annulée."
+                )
                 continue
 
             #  Adapte au constructeur de ta classe Mentalist
