@@ -174,7 +174,7 @@ while True:
         if ship is None:
             print("Aucun vaisseau sélectionné.")
             continue
-        ready, msg = ship.check_preparation()  # ✅ fonctionne maintenant
+        ready, msg = ship.check_preparation()  
         print(msg)
 
     elif choice == "7":
@@ -185,21 +185,19 @@ while True:
         )
         try:
             save_data(fleet, file_name)
-            print(f"✅ Flotte sauvegardée dans {file_name}")
+            print(f" Flotte sauvegardée dans {file_name}")
         except Exception as e:
-            print(f"❌ Erreur de sauvegarde: {e}")
+            print(f" Erreur de sauvegarde: {e}")
 
+    
     elif choice == "8":
-        # Charger une flotte depuis un fichier JSON
-        file_name = (
-            input("Nom du fichier JSON à charger (ex: data/fleet.json): ").strip()
-            or "data/fleet.json"
-        )
+        file_name = input("Nom du fichier JSON à charger (ex: data/fleet.json): ").strip() or "data/fleet.json"
         try:
             fleet = load_data(file_name)  # on remplace la flotte courante
             print(f" Flotte chargée depuis {file_name}")
         except Exception as e:
             print(f" Erreur de chargement: {e}")
+
 
     elif choice == "9":
         print("Au revoir !")

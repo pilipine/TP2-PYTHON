@@ -98,108 +98,75 @@ from Spaceship import Spaceship
 from Fleet import Fleet
 
 
+
+# save_load_json.py
+import json
+from pathlib import Path
+
+from Fleet import Fleet
+from Spaceship import Spaceship
+from Operator import Operator
+from Mentalist import Mentalist
+
 def load_data(file_name: str) -> Fleet:
     """
     1) json.load(file) -> dict
-    2) créer Spaceship et fleet.append_spaceship(...)
+    2) créer Spaceship et fleet.append_ship(...)
     3) créer Operator/Mentalist et spaceship.append_member(...)
     4) retourner Fleet
     """
-    # Étape 1
+    # Étape 1 : charger
     path = Path(file_name)
     if not path.exists():
         raise FileNotFoundError(f"Fichier introuvable : {file_name}")
+
     with open(path, "r", encoding="utf-8") as f:
         data = json.load(f)
 
-    # Étape 2 : Fleet + Spaceships
-    fleet = Fleet()
-    fleet_name = data.get("_Fleet__name", "")
-    try:
-        setattr(
-            fleet, "_Fleet__name", fleet_name
-        )  # si ta classe a un setter, tu peux l'utiliser à la place
-    except Exception:
-        pass
+    # Étape 2 : Fleet avec SON NOM (ta classe Fleet exige 'name')
+    fleet_name = data.get("_Fleet__name", "Flotte")
+    fleet = Fleet(fleet_name)
 
+    # Vaisseaux
     for sd in data.get("_Fleet__spaceships", []):
-        name = sd.get("_Spaceship__name", "Unnamed")
-        ship_type = sd.get("_Spaceship__shipType", "")
-        condition = sd.get("_Spaceship__condition", "")
+        name      = sd.get("_Spaceship__name", "SansNom")
+        ship_type = sd.get("_Spaceship__shipType", "Marchand")
+        condition = sd.get("_Spaceship__condition", "Opérationnel")
 
-        # Créer le Spaceship (au minimum avec le nom)
-        try:
-            spaceship = Spaceship(name)
-        except TypeError:
-            spaceship = Spaceship(name=name)
+        # Signature de ta classe Spaceship : (name, ship_type, crew=None, condition="Opérationnel")
+        spaceship = Spaceship(name=name, ship_type=ship_type, condition=condition)
 
-        # On remet les attributs privés si nécessaire
-        for attr, val in (
-            ("_Spaceship__shipType", ship_type),
-            ("_Spaceship__condition", condition),
-        ):
-            try:
-                setattr(spaceship, attr, val)
-            except Exception:
-                pass
+        # Ajout dans la flotte (méthode réelle : append_ship ou add_ship)
+        if hasattr(fleet, "append_ship"):
+            fleet.append_ship(spaceship)
+        else:
+            fleet.add_ship(spaceship)
 
-        # Intégrer dans la flotte (exigence de la slide)
-        fleet.append_spaceship(spaceship)
-
-        # Étape 3 : membres
+        # Membres
         for md in sd.get("_Spaceship__crew", []):
-            kind = md.get("_Member__kind", "")
+            kind       = md.get("_Member__kind", "")
             first_name = md.get("_Member__first_name", "")
-            last_name = md.get("_Member__last_name", "")
-            age = md.get("_Member__age", 0)
-            gender = md.get("_Member__gender", "")
+            last_name  = md.get("_Member__last_name", "")
+            gender     = md.get("_Member__gender", "")
+            age        = md.get("_Member__age", 0)
 
             if kind == "Operator":
-                role = md.get("_Operator__role", "")
+                role       = md.get("_Operator__role", "")
                 experience = md.get("_Operator__experience", 0)
-                # Essaie avec un constructeur riche, sinon fallback + setattr
-                try:
-                    member = Operator(
-                        first_name, last_name, age, gender, role, experience
-                    )
-                except TypeError:
-                    member = Operator(first_name or last_name or "Unknown")
-                    for attr, val in (
-                        ("_Member__first_name", first_name),
-                        ("_Member__last_name", last_name),
-                        ("_Member__age", age),
-                        ("_Member__gender", gender),
-                        ("_Operator__role", role),
-                        ("_Operator__experience", experience),
-                    ):
-                        try:
-                            setattr(member, attr, val)
-                        except Exception:
-                            pass
+                # ⚠️ ordre requis par ta classe Operator :
+                # Operator(first_name, last_name, gender, age, role, experience)
+                member = Operator(first_name, last_name, gender, age, role, experience)
 
             elif kind == "Mentalist":
                 mana = md.get("_Mentalist__mana", 0)
-                try:
-                    member = Mentalist(first_name, last_name, age, gender, mana)
-                except TypeError:
-                    member = Mentalist(first_name or last_name or "Unknown")
-                    for attr, val in (
-                        ("_Member__first_name", first_name),
-                        ("_Member__last_name", last_name),
-                        ("_Member__age", age),
-                        ("_Member__gender", gender),
-                        ("_Mentalist__mana", mana),
-                    ):
-                        try:
-                            setattr(member, attr, val)
-                        except Exception:
-                            pass
+                # Hypothèse : Mentalist(first_name, last_name, gender, age, mana)
+                member = Mentalist(first_name, last_name, gender, age, mana)
+
             else:
-                # Type inconnu -> on ignore
+                # Type inconnu -> ignorer
                 continue
 
-            # Intégrer dans le vaisseau (exigence de la slide)
             spaceship.append_member(member)
 
-    # Étape 4
+    # Étape 4 : renvoyer la flotte
     return fleet
