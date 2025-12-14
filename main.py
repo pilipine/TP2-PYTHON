@@ -1,3 +1,21 @@
+import json
+import ast
+
+
+def save_data(fleet, file_name):
+    # 1. Convertir l'objet en chaîne JSON
+    json_string = json.dumps(
+        fleet, default=lambda o: o.__dict__, sort_keys=True, indent=4
+    )
+
+    # 2. Convertir la chaîne en dictionnaire
+    json_dict = ast.literal_eval(json_string)
+
+    # 3. Enregistrer le dictionnaire dans un fichier JSON
+    with open(file_name, "w") as file:
+        json.dump(json_dict, file)
+
+
 # main.py
 from Member import *
 from Operator import *
