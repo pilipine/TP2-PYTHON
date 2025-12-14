@@ -1,102 +1,99 @@
 
+
 {
   "_Fleet__name": "Galactica",
   "_Fleet__spaceships": [
     {
       "_Spaceship__name": "Bayta",
-      "_Spaceship__shipType": "marchand",
-      "_Spaceship__condition": "operationnel",
+      "_Spaceship__shipType": "Marchand",
+      "_Spaceship__condition": "Opérationnel",
       "_Spaceship__crew": [
         {
-          "_Member__age": 48,
           "_Member__first_name": "Bel",
-          "_Member__gender": "homme",
           "_Member__last_name": "Riose",
-          "_Operator__experience": 25,
+          "_Member__gender": "Homme",
+          "_Member__age": 48,
           "_Operator__role": "commandant",
+          "_Operator__experience": 0,
           "_Member__kind": "Operator"
         },
         {
-          "_Member__age": 34,
           "_Member__first_name": "Gaal",
-          "_Member__gender": "femme",
           "_Member__last_name": "Dornick",
-          "_Operator__experience": 12,
+          "_Member__gender": "Femme",
+          "_Member__age": 34,
           "_Operator__role": "technicien",
+          "_Operator__experience": 0,
           "_Member__kind": "Operator"
         },
         {
-          "_Member__age": 28,
           "_Member__first_name": "Salvor",
-          "_Member__gender": "femme",
           "_Member__last_name": "Hardin",
-          "_Operator__experience": 7,
+          "_Member__gender": "Femme",
+          "_Member__age": 28,
           "_Operator__role": "armurier",
+          "_Operator__experience": 0,
           "_Member__kind": "Operator"
         }
       ]
     },
-
     {
       "_Spaceship__name": "Dark Nebula",
-      "_Spaceship__shipType": "guerre",
-      "_Spaceship__condition": "operationnel",
+      "_Spaceship__shipType": "Guerre",
+      "_Spaceship__condition": "Endommagé",
       "_Spaceship__crew": [
         {
-          "_Member__age": 37,
           "_Member__first_name": "Hugo",
-          "_Member__gender": "homme",
           "_Member__last_name": "Crast",
-          "_Operator__experience": 15,
+          "_Member__gender": "Homme",
+          "_Member__age": 37,
           "_Operator__role": "pilote",
+          "_Operator__experience": 0,
           "_Member__kind": "Operator"
         },
         {
-          "_Member__age": 48,
           "_Member__first_name": "Tellem",
-          "_Member__gender": "homme",
           "_Member__last_name": "Bond",
+          "_Member__gender": "Homme",
+          "_Member__age": 48,
           "_Mentalist__mana": 80,
           "_Member__kind": "Mentalist"
         }
       ]
     },
-
     {
       "_Spaceship__name": "Fearless",
-      "_Spaceship__shipType": "guerre",
-      "_Spaceship__condition": "operationnel",
+      "_Spaceship__shipType": "Guerre",
+      "_Spaceship__condition": "Opérationnel",
       "_Spaceship__crew": [
         {
-          "_Member__age": 52,
           "_Member__first_name": "Yanna",
-          "_Member__gender": "femme",
           "_Member__last_name": "Seldon",
+          "_Member__gender": "Femme",
+          "_Member__age": 52,
           "_Mentalist__mana": 80,
           "_Member__kind": "Mentalist"
         },
         {
-          "_Member__age": 25,
           "_Member__first_name": "Joie",
-          "_Member__gender": "femme",
           "_Member__last_name": "",
+          "_Member__gender": "Femme",
+          "_Member__age": 25,
           "_Mentalist__mana": 80,
           "_Member__kind": "Mentalist"
         }
       ]
     },
-
     {
       "_Spaceship__name": "Unimara",
-      "_Spaceship__shipType": "marchand",
-      "_Spaceship__condition": "operationnel",
+      "_Spaceship__shipType": "Marchand",
+      "_Spaceship__condition": "Opérationnel",
       "_Spaceship__crew": []
     },
-
     {
       "_Spaceship__name": "Weinis",
-      "_Spaceship__shipType": "marchand",
-      "_Spaceship__condition": "operationnel",
+      "_Spaceship__shipType": "Marchand",
+      "_Spaceship__condition": "Endommagé",
       "_Spaceship__crew": []
     }
   ]

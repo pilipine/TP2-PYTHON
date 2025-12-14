@@ -153,43 +153,35 @@ class Spaceship:
                 )
 
 
-def check_preparation(self):
-    """
-    Vérifie qu'au moins un pilote et un technicien sont présents à bord.
-    Retourne (is_ready, message).
-    """
-    has_pilot = False
-    has_technician = False
+    def check_preparation(self):
+        has_pilot = False
+        has_technician = False
 
-    for m in self.__crew:
-        from Operator import Operator
+        # On parcourt l'équipage
+        for m in self.__crew:
+            # On ne considère que les Operators pour les rôles
+            # (les Mentalists n'ont pas de rôle de "pilote/technicien")
+            from Operator import Operator
+            if isinstance(m, Operator):
+                role_val = m.get_role() if hasattr(m, "get_role") else getattr(m, "role", "")
+                role = (role_val or "").strip().lower()
 
-        if isinstance(m, Operator):
-            role_val = (
-                m.get_role() if hasattr(m, "get_role") else getattr(m, "role", "")
-            ) or ""
-            role = role_val.strip().lower()
+                if role == "pilote":
+                    has_pilot = True
+                elif role == "technicien":
+                    has_technician = True
 
-            if role == "pilote":
-                has_pilot = True
-            elif role == "technicien":
-                has_technician = True
+                # optim : si les deux sont déjà présents, on peut conclure
+                if has_pilot and has_technician:
+                    return True, f"{self.get_name()} est prêt à décoller !"
 
-            if has_pilot and has_technician:
-                return True, f"{self.get_name()} est prêt à décoller !"
+        # Messages explicites si ça manque
+        if not has_pilot and not has_technician:
+            return False, f"{self.get_name()} ne peut pas décoller : aucun pilote et aucun technicien à bord."
+        if not has_pilot:
+            return False, f"{self.get_name()} ne peut pas décoller : aucun pilote à bord."
+        if not has_technician:
+            return False, f"{self.get_name()} ne peut pas décoller : aucun technicien à bord."
 
-    # Messages explicites
-    if not has_pilot and not has_technician:
-        return (
-            False,
-            f"{self.get_name()} ne peut pas décoller : aucun pilote et aucun technicien à bord.",
-        )
-    if not has_pilot:
-        return False, f"{self.get_name()} ne peut pas décoller : aucun pilote à bord."
-    if not has_technician:
-        return (
-            False,
-            f"{self.get_name()} ne peut pas décoller : aucun technicien à bord.",
-        )
-
-    return False, f"{self.get_name()} ne peut pas décoller."
+        # Sécurité (ne devrait pas arriver si on a bien couvert tous les cas)
+        return False, f"{self.get_name()} ne peut pas décoller."

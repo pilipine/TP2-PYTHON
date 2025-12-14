@@ -3,6 +3,9 @@ from Operator import Operator
 from Mentalist import Mentalist
 from Spaceship import Spaceship
 
+ALLOWED_SHIP_TYPES = {"Marchand", "Guerre", "Exploration"}
+ALLOWED_CONDITIONS = {"Opérationnel", "Endommagé"}
+
 
 class Fleet:
     def __init__(self, name, spaceships=None):
@@ -25,66 +28,69 @@ class Fleet:
             raise TypeError("Tous les éléments doivent être des Spaceship.")
         self.__spaceships = list(new_spaceships)
 
+    # --------- Ajout d'un vaisseau ----------
+    def append_ship(self, ship):
+        """
+        Ajoute un vaisseau après validations.
+        Retourne True si ajouté, False sinon.
+        """
+        # Vérifier que ship a les méthodes nécessaires
+        required_methods = ("get_name", "get_ship_type", "get_condition")
+        if not all(hasattr(ship, m) and callable(getattr(ship, m)) for m in required_methods):
+            print("[ERR] Doit être un objet de type Spaceship (méthodes manquantes).")
+            return False
 
+        # Capacité
+        if len(self.__spaceships) >= 15:
+            print("[WARN] Capacité max de 15 vaisseaux atteinte.")
+            return False
 
-ALLOWED_SHIP_TYPES = {"Marchand", "Guerre", "Exploration"}
-ALLOWED_CONDITIONS = {"Opérationnel", "Endommagé"}
+        # Unicité (optionnel)
+        ship_name = ship.get_name()
+        if any(s.get_name().strip().lower() == ship_name.strip().lower() for s in self.__spaceships):
+            print(f"[INFO] Un vaisseau nommé '{ship_name}' existe déjà dans la flotte.")
+            return False
 
-def append_ship(self, ship):
-    # Vérifier que ship a les méthodes nécessaires
-    required_methods = ("get_name", "get_type", "get_condition")
-    if not all(hasattr(ship, m) and callable(getattr(ship, m)) for m in required_methods):
-        print("[ERR] Doit être un objet de type Spaceship (méthodes manquantes).")
-        return False
+        # Validation type
+        ship_type = ship.get_ship_type()
+        if not ship_type or ship_type.strip() == "":
+            print("[ERR] Type de vaisseau manquant.")
+            return False
+        type_norm = ship_type.strip().capitalize()
+        if type_norm not in ALLOWED_SHIP_TYPES:
+            print(f"[ERR] Type invalide: '{ship_type}'. "
+                  f"Valeurs autorisées: {', '.join(sorted(ALLOWED_SHIP_TYPES))}.")
+            return False
 
-    # Capacité
-    if len(self.__spaceships) >= 15:
-        print("[WARN] Capacité max de 15 vaisseaux atteinte.")
-        return False
+        # Validation état
+        condition = ship.get_condition()
+        if not condition or condition.strip() == "":
+            print("[ERR] État du vaisseau manquant.")
+            return False
+        cond_norm = condition.lower().replace("é", "e")
+        if cond_norm == "operationnel":
+            condition = "Opérationnel"
+        elif cond_norm == "endommage":
+            condition = "Endommagé"
+        if condition not in ALLOWED_CONDITIONS:
+            print(f"[ERR] État invalide: '{condition}'. "
+                  f"Valeurs autorisées: {', '.join(sorted(ALLOWED_CONDITIONS))}.")
+            return False
 
-    # Unicité (optionnel)
-    ship_name = ship.get_name()
-    if any(s.get_name().strip().lower() == ship_name.strip().lower() for s in self.__spaceships):
-        print(f"[INFO] Un vaisseau nommé '{ship_name}' existe déjà dans la flotte.")
-        return False
+        # Ajout
+        self.__spaceships.append(ship)
+        print(f"[OK] '{ship.get_name()}' ajouté à la flotte '{self.get_name()}'.")
+        return True
 
-    # Validation type
-    ship_type = ship.get_type()
-    if not ship_type or ship_type.strip() == "":
-        print("[ERR] Type de vaisseau manquant.")
-        return False
-    if ship_type.capitalize() not in ALLOWED_SHIP_TYPES:
-        print(f"[ERR] Type invalide: '{ship_type}'. "
-              f"Valeurs autorisées: {', '.join(sorted(ALLOWED_SHIP_TYPES))}.")
-        return False
-
-    # Validation état
-    condition = ship.get_condition()
-    if not condition or condition.strip() == "":
-        print("[ERR] État du vaisseau manquant.")
-        return False
-    cond_norm = condition.lower().replace("é", "e")
-    if cond_norm == "operationnel":
-        condition = "Opérationnel"
-    elif cond_norm == "endommage":
-        condition = "Endommagé"
-    if condition not in ALLOWED_CONDITIONS:
-        print(f"[ERR] État invalide: '{condition}'. "
-              f"Valeurs autorisées: {', '.join(sorted(ALLOWED_CONDITIONS))}.")
-        return False
-
-    # Ajout
-    self.__spaceships.append(ship)
-    print(f"[OK] '{ship.get_name()}' ajouté à la flotte '{self.get_name()}'.")
-    return True
-
-    # Alias optionnel pour compat avec d'autres appels
+    # --------- Aliases pour compatibilité ----------
     def add_ship(self, ship):
+        return self.append_ship(ship)
+
+    def append_spaceship(self, ship):
         return self.append_ship(ship)
 
     # --------- Statistiques ----------
     def statistics(self):
-       
         total_experience = 0
         operator_count = 0
         total_members = 0
@@ -96,18 +102,11 @@ def append_ship(self, ship):
                 if isinstance(member, Operator):
                     operator_count += 1
                     total_experience += member.get_experience()
-                    role = (member.get_role() or "").strip().lower()
-                    if role not in role_member:
-                        role_member[role] = 1
-                    else:
-                        role_member[role] += 1
                     role_member["operator"] += 1
                 elif isinstance(member, Mentalist):
                     role_member["mentalist"] += 1
 
-        average_experience = (
-            (total_experience / operator_count) if operator_count > 0 else 0
-        )
+        average_experience = (total_experience / operator_count) if operator_count > 0 else 0
 
         return {
             "nombre_de_vaisseaux": len(self.__spaceships),
@@ -117,9 +116,9 @@ def append_ship(self, ship):
         }
 
 
+# --------- Choix d'un vaisseau (fonction utilitaire, hors classe) ----------
 def choose_ship(fleet):
     """Sélection simple dans une liste de vaisseaux ou un objet Fleet."""
-    # Récupérer la liste de vaisseaux selon ce qui est passé
     items = fleet.get_spaceships() if isinstance(fleet, Fleet) else fleet
 
     if not items:
@@ -128,7 +127,6 @@ def choose_ship(fleet):
 
     print("\nListe des vaisseaux :")
     for i, s in enumerate(items, start=1):
-        # suppose que Spaceship a get_name() et get_ship_type()
         print(f"{i}. {s.get_name()} ({s.get_ship_type()})")
 
     raw = input("Choisissez un numéro (Enter pour annuler) : ").strip()

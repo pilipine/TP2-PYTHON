@@ -6,8 +6,6 @@ from Spaceship import *
 from Fleet import *
 from save_load_json import *
 
-current_fleet = Fleet()
-
 
 # Instanciation de la classe Staceship
 bayta = Spaceship("Bayta", "Marchand")
@@ -119,14 +117,12 @@ while True:
                 input("État (Opérationnel/Endommagé) [défaut: Opérationnel] : ").strip()
                 or "Opérationnel"
             )
-            # ⚠️ adapte les noms d'arguments à ton constructeur Spaceship
             new_ship = Spaceship(name=name, ship_type=ship_type, condition=condition)
-            if fleet.append_ship(
-                new_ship
-            ):  # ou fleet.append_spaceship(new_ship) selon ta classe
-                print(f"[OK] Vaisseau '{name}' ({ship_type}) ajouté.")
-            else:
-                print("[INFO] Ajout non effectué (capacité/validation).")
+
+        if fleet.append_ship(new_ship):
+            print(f"[OK] Vaisseau '{name}' ({ship_type}) ajouté.")
+        else:
+            print("[INFO] Ajout non effectué (capacité/validation).")
 
     elif choice == "3":
         # Ajouter un membre dans un vaisseau choisi
@@ -143,7 +139,7 @@ while True:
         age = int(input("Âge : ").strip() or 0)
 
         # ⚠️ adapte au constructeur de ta classe Operator
-        new_member = Operator(first_name, last_name, age, gender, role, experience=0)
+        new_member = Operator(first_name, last_name, gender, age, role, experience=0)
         ship.append_member(new_member)
         print(f"[OK] {first_name} {last_name} ajouté(e) à {ship.get_name()}.")
 
@@ -178,7 +174,7 @@ while True:
         if ship is None:
             print("Aucun vaisseau sélectionné.")
             continue
-        ready, msg = ship.check_preparation()
+        ready, msg = ship.check_preparation()  # ✅ fonctionne maintenant
         print(msg)
 
     elif choice == "7":
@@ -201,9 +197,9 @@ while True:
         )
         try:
             fleet = load_data(file_name)  # on remplace la flotte courante
-            print(f"✅ Flotte chargée depuis {file_name}")
+            print(f" Flotte chargée depuis {file_name}")
         except Exception as e:
-            print(f"❌ Erreur de chargement: {e}")
+            print(f" Erreur de chargement: {e}")
 
     elif choice == "9":
         print("Au revoir !")
