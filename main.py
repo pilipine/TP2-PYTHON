@@ -123,29 +123,96 @@ while True:
         if fleet.append_ship(new_ship):
             print(f"[OK] Vaisseau '{name}' ({ship_type}) ajouté.")
         else:
-            print("[INFO] Ajout non effectué (capacité/validation).")
+            print(
+                "[INFO] Ajout non effectué car le type ou l'état du vaisseau mal écrit."
+            )
 
     elif choice == "3":
         # Ajouter un membre dans un vaisseau choisi
         print("\n=== Ajouter un membre ===")
+        print("Choisissez un vaisseau où ajouter ce nouveau membre")
         ship = choose_ship(fleet)
         if ship is None:
             print("Aucun vaisseau sélectionné.")
             continue
 
+        # Choix du type de membre
+        print("\nType de membre à ajouter :")
+        print("  1. Opérateur")
+        print("  2. Mentaliste")
+        member_type = input("Votre choix (1/2) : ").strip()
+
+        # Saisie qui fonctionne pour le mentaliste comme pour l'opérateur
         first_name = input("Prénom : ").strip()
         last_name = input("Nom : ").strip()
         gender = input("Genre (Homme/Femme) : ").strip()
-        role = input("Rôle (ex: pilote, technicien...) : ").strip()
-        age = int(input("Âge : ").strip() or 0)
 
-        # ⚠️ adapte au constructeur de ta classe Operator
-        new_member = Operator(first_name, last_name, gender, age, role, experience=0)
-        ship.append_member(new_member)
-        print(f"[OK] {first_name} {last_name} ajouté(e) à {ship.get_name()}.")
+        if not first_name or not last_name:
+            print("[ERR] Prénom et Nom sont obligatoires.")
+            continue
+
+        gender = gender.strip()
+        if member_type == "1":
+            # ==== Opérateur ====
+            role = input("Rôle (ex: pilote, technicien...) : ").strip().lower()
+            age_str = input("Âge : ").strip()
+            try:
+                age = int(age_str) if age_str else 0
+            except ValueError:
+                print("[ERR] L'âge doit être un entier. Opération annulée.")
+                continue
+            new_member = Operator(
+                first_name, last_name, gender, age, role, experience=0
+            )
+
+            if ship.append_member(new_member):
+                print(
+                    f"[OK] {first_name} {last_name} (opérateur) ajouté(e) à {ship.get_name()}."
+                )
+            else:
+                print("[INFO] Ajout non effectué.")
+
+        elif member_type == "2":
+            # ==== Mentaliste ====
+            age_str = input("Âge : ").strip()
+            try:
+                age = int(age_str) if age_str else 0
+            except ValueError:
+                print("[ERR] L'âge doit être un entier. Opération annulée.")
+                continue
+
+            mana_str = input("Mana initial (entier, ex: 100) : ").strip()
+            try:
+                mana = int(mana_str) if mana_str else 0
+            except ValueError:
+                print("[ERR] Le mana doit être un entier. Opération annulée.")
+                continue
+
+            #  Adapte au constructeur de ta classe Mentalist
+            try:
+                new_member = Mentalist(first_name, last_name, gender, age, mana)
+            except TypeError:
+                print(
+                    "[ERR] Le constructeur de Mentalist ne correspond pas aux paramètres (prénom, nom, genre, âge, mana)."
+                )
+                continue
+
+            if ship.append_member(new_member):
+                print(
+                    f"[OK] {first_name} {last_name} (mentaliste, mana={mana}) ajouté(e) à {ship.get_name()}."
+                )
+            else:
+                print("[INFO] Ajout non effectué.")
+
+        else:
+            print(
+                "[ERR] Choix invalide (veuillez saisir 1 pour Opérateur ou 2 pour Mentaliste)."
+            )
+            continue
 
     elif choice == "4":
         # Supprimer un membre
+        print("Choisissez un vaisseau où ajouter ce nouveau membre")
         ship = choose_ship(fleet)
         if ship is None:
             print("Aucun vaisseau sélectionné.")
@@ -163,6 +230,7 @@ while True:
 
     elif choice == "5":
         # Afficher l'équipage d'un vaisseau choisi
+        print("Choisissez un vaisseau pour avoir les informations")
         ship = choose_ship(fleet)
         if ship is None:
             print("Aucun vaisseau sélectionné.")
