@@ -155,20 +155,20 @@ def _gain_experience(op, n=1):
 def run_mission(ship):
     """Exécute la mission galactique pour un vaisseau."""
     name = _get_ship_name(ship)
-    print(f"\n=== 🚀 Mission Galactique – {name} ===")
+    print(f"\n===  Mission Galactique – {name} ===")
 
     ready, mentalist = mission_ready(ship)
     if not ready:
         print(
-            "⛔ Mission impossible : il faut au moins un pilote, un technicien "
+            " Mission impossible : il faut au moins un pilote, un technicien "
             "et un mentaliste avec ≥ 50 mana."
         )
         _set_ship_condition(ship, "Endommagé")
-        print(f"⚠️  {name} a été endommagé pendant la tentative.")
+        print(f" {name} a été endommagé pendant la tentative.")
         return
 
     # Mission réussie (règle demandée)
-    print("✅ Conditions remplies : la mission RÉUSSIT !")
+    print(" Conditions remplies : la mission RÉUSSIT !")
 
     # Consomme 50 mana du mentaliste participant
     mana_before = _get_mana(mentalist)
@@ -176,7 +176,7 @@ def run_mission(ship):
         _set_mana(mentalist, max(0, mana_before - 50))
         mana_after = _get_mana(mentalist)
         first = _safe_get(mentalist, "get_first_name", "first_name", "Le mentaliste")
-        print(f"🧠 Mana consommé : {first} passe de {mana_before} → {mana_after}")
+        print(f" Mana consommé : {first} passe de {mana_before} → {mana_after}")
 
     # +1 XP pour tous les opérateurs du vaisseau
     gained = 0
@@ -184,8 +184,8 @@ def run_mission(ship):
         if _is_operator(member):
             _gain_experience(member, 1)
             gained += 1
-    print(f"🎖️ Expérience +1 pour {gained} opérateur(s).")
+    print(f" Expérience +1 pour {gained} opérateur(s).")
 
     # Le vaisseau est opérationnel en fin de mission
     _set_ship_condition(ship, "Opérationnel")
-    print(f"🛠️  État du vaisseau : {_get_ship_condition(ship)}")
+    print(f"  État du vaisseau : {_get_ship_condition(ship)}")

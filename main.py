@@ -90,7 +90,7 @@ while True:
     print("7. Sauvegarde de la flotte (JSON)")
     print("8. Charger une flotte (JSON)")
     print("9. Quitter")
-    print("10. Lancer une mission galactique")
+    print("10. (BONUS) Lancer une mission galactique")
 
     choice = input("Choisissez une option : ").strip()
 
@@ -207,6 +207,12 @@ while True:
 
     elif choice == "10":
         # Lancer une mission galactique
+        print("\n Conditions pour lancer une mission :")
+        print(" - Au moins 1 pilote")
+        print(" - Au moins 1 technicien")
+        print(" - Au moins 1 mentaliste avec un mana ≥ 50")
+        print("Sélectionnez maintenant le vaisseau à envoyer en mission.")
+
         ship = choose_ship(fleet)
         if ship is None:
             print("Aucun vaisseau sélectionné.")
