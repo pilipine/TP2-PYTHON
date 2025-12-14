@@ -124,7 +124,7 @@ while True:
             print(f"[OK] Vaisseau '{name}' ({ship_type}) ajouté.")
         else:
             print(
-                "[INFO] Ajout non effectué car le type ou l'état du vaisseau mal écrit."
+                "[INFO] Ajout non effectué car le type ou l'état du vaisseau est mal écrit."
             )
 
     elif choice == "3":
@@ -181,11 +181,17 @@ while True:
                 print("[ERR] L'âge doit être un entier. Opération annulée.")
                 continue
 
-            mana_str = input("Mana initial (entier, ex: 100) : ").strip()
+            mana_str = input("Mana initial (entier, entre 0-100) : ").strip()
             try:
-                mana = int(mana_str) if mana_str else 0
+                
+                mana = int(mana_str)
             except ValueError:
-                print("[ERR] Le mana doit être un entier. Opération annulée.")
+                print("[ERR] Le mana doit être un ENTIER. Opération annulée.")
+                continue
+
+            # 2) Vérifier la plage autorisée
+            if mana < 0 or mana > 100:
+                print("[ERR] Le mana doit être compris entre 0 et 100 inclus. Opération annulée.")
                 continue
 
             #  Adapte au constructeur de ta classe Mentalist

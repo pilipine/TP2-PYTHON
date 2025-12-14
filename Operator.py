@@ -178,14 +178,6 @@ def run_mission(ship):
         first = _safe_get(mentalist, "get_first_name", "first_name", "Le mentaliste")
         print(f" Mana consommé : {first} passe de {mana_before} → {mana_after}")
 
-    # +1 XP pour tous les opérateurs du vaisseau
-    gained = 0
-    for member in getattr(ship, "crew", []):
-        if _is_operator(member):
-            _gain_experience(member, 1)
-            gained += 1
-    print(f" Expérience +1 pour {gained} opérateur(s).")
-
     # Le vaisseau est opérationnel en fin de mission
     _set_ship_condition(ship, "Opérationnel")
     print(f"  État du vaisseau : {_get_ship_condition(ship)}")

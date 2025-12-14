@@ -142,11 +142,14 @@ class Spaceship:
                 print(
                     f"- {fname} {lname} est {article} {gender} de {age} ans au rôle de {role}."
                 )
+
             elif isinstance(m, Mentalist):
                 mana = m.get_mana() if hasattr(m, "get_mana") else getattr(m, "mana", 0)
+                # Indiquer explicitement le rôle "Mentaliste"
                 print(
-                    f"- {fname} {lname} est {article} {gender} de {age} ans avec {mana} de mana."
+                    f"- {fname} {lname} est {article} {gender} de {age} ans, Mentaliste (mana = {mana})."
                 )
+
             else:
                 print(
                     f"- {fname} {lname} est {article} {gender} de {age} ans (membre d’équipage)."
